@@ -1,0 +1,196 @@
+###############################################################################
+#                                                                             #
+#                  .d8888b.                         888                       # 
+#                 d88P  Y88b                        888                       #
+#                 888         .d88b.  88888b.d88b.  888888b.                  #
+#                 888        d88""88b 888 "888 "88b 888  "88b                 #
+#                 Y88b  d88P Y88..88P 888  888  888 888  d88P                 #
+#                  "Y8888P"   "Y88P"  888  888  888 888888P"                  #
+#                                                                             #
+#                           A Statamic Search Add-On                          #
+#                                                                             #
+#  -------------------------------------------------------------------------  #
+#                                                                             #
+#  DEVELOPER'S NOTE:                                                          #
+#                                                                             #
+#  There's a hierarchy of how configured settings will override each other.   #
+#  This file is the 2nd-lowest in priority for configuring settings in the    #
+#  chain. The hierarchy runs as follows, where higher numbers override        #
+#  lower numbers:                                                             #
+#                                                                             #
+#    --( lowest priority )--                                                  #
+#    1. default values (as set within the add-on itself)                      #
+#    2. settings set in the `comb.yaml` configuration file (this file)        #
+#    3. settings set in the `dataset` YAML file corresponding to the          #
+#       `dataset` parameter set on a comb tag itself                          #
+#    4. parameters set on the comb tag itself (when possible)                 #
+#    --( highest priority )--                                                 #
+#                                                                             #
+#  You'll notice that #4 on the list above says "(when possible)," this is    #
+#  because some settings require lists. Any parameter requiring a list        #
+#  cannot be set as a parameter at tag-level.                                 #
+#                                                                             #
+#  For best results, if you'll only have one search on your site (which is    #
+#  the most common scenario), set all of your settings here in this file.     #
+#  If you're going to have multiple sets of data to search through on your    #
+#  site, we recommend that you either set all settings into a dataset, or     #
+#  set "global" settings here, and override as needed within a dataset.       #
+#  Either way, if you choose to use a dataset, don't forget to reference      #
+#  your dataset on your tag.                                                  #
+#                                                                             #
+#  All of the available settings have been listed below. If a setting has a   #
+#  default value set within the add-on itself, that value is listed. Simply   #
+#  comment out the setting you which to set and set it.                       #
+#                                                                             #
+###############################################################################
+
+
+# -----------------------------------------------------------------------------
+# Search Settings
+# -----------------------------------------------------------------------------
+
+# the strength-multiplier for each type of match
+#match_weights:
+#  partial_word: 1,
+#  partial_first_word: 2,
+#  partial_word_start: 1,
+#  partial_first_word_start: 2,
+#  whole_word: 5,
+#  whole_first_word: 5,
+#  partial_whole: 2,
+#  partial_whole_start: 2,
+#  whole: 10
+  
+# the minimum number of characters required to trigger a search
+#min_characters: 3
+
+# the minimum number of characters per word to be included in a search
+#min_word_characters: 2
+
+# the lowest score value a result can get to appear as a result 
+#score_threshold: 1
+
+# strength-multipliers for matches found in specific variables
+#property_weights:
+ 
+# what type of query should be used? (boolean|words|whole)
+#query_mode: boolean
+
+# should comb automatically singularize pluralized queried words (English only)
+#use_stemming: false
+
+# should comb automatically substitute 'and' for '&' (and vice versa)
+#use_alternates: false
+
+# for `boolean` or `words` query modes, should we also search the entire phrase 
+# as a whole?
+#include_full_query: true
+
+# if more results come back than the limit allows, should a `too many results` 
+# error happen?
+#enable_too_many_results: false
+
+# should results be sorted by score?
+#sort_by_score: true
+
+# a list of variables to not search over (variables in this list will 
+# be ignored)
+#exclude_properties:
+
+# a list of variables to only search over (variables not in this list will 
+# be ignored)
+#include_properties:
+
+# a list of "stop words," words that are too common to search against, these 
+# will be filtered out of queries
+#stop_words:
+#  - the
+#  - an
+#  - a
+
+
+# -----------------------------------------------------------------------------
+# Data Settings
+# -----------------------------------------------------------------------------
+
+# folders to search through (search multiple folders at one by 
+# pipe-delimiting them)
+#folders: 
+
+# grab the taxonomy from the URL and only search over matching items?
+#taxonomy: false
+
+# search for and show hidden content in the results?
+#show_hidden: false
+
+# search for and show draft content in the results?
+#show_drafts: false
+
+# limit searches to date-based-entries since this time
+#since:
+
+# limit searches to date-based-entries until this time
+#until:
+
+# search through future date-based-entries?
+#show_future: false
+
+# search through past date-based-entries?
+#show_past: true
+
+# the type of content to search for (pages|entries|all)
+#type: all
+
+# set additional conditions to limit searched-over data (works like the 
+# entries:listing tag)
+#conditions:
+
+# should each content file's {{ content }} field be included in the search?
+#include_content: true
+
+
+# -----------------------------------------------------------------------------
+# Logging Settings
+# -----------------------------------------------------------------------------
+
+# log successful searches as `info`-level messages?
+#log_successful_searches: true
+
+# log failed searches as `warn`-level messages?
+#log_failed_searches: true
+
+
+# -----------------------------------------------------------------------------
+# Input Settings
+# -----------------------------------------------------------------------------
+
+# the variable name (the `name` attribute in your search form's input field) to 
+# look use as your query
+#query_variable: query
+
+
+# -----------------------------------------------------------------------------
+# Output Settings
+# -----------------------------------------------------------------------------
+
+# limits the number of results returned, or when `paginate` is on, the number 
+# of results per page
+#limit_results: 10
+
+# the number of results to offset the results returned (don't use if you want 
+# to use `paginate`)
+#offset: 0
+
+# should the results be paginated?
+#paginate: true
+
+
+# -----------------------------------------------------------------------------
+# Result-Caching Settings
+# -----------------------------------------------------------------------------
+
+# when set, search results are queried per query and configuration for the 
+# given number of minutes if you want to tie this cache to when your site's 
+# content cache is updated, set to "on cache update" but note, scheduled 
+# content does not trigger this cache update
+#query_cache_length: 30  # in minutes

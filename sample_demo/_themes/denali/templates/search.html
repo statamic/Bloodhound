@@ -1,0 +1,53 @@
+<div class="block">
+	<header>
+		<h1>{{ title }}</h1>
+	</header>
+
+	<form action="/search" method="get">
+		<p>
+			Computer! Bring me information regarding <input type="text" name="query" value="{{ get:query|sanitize }}"> at once!
+		</p>
+	</form>
+
+	{{ bloodhound:search dataset="sample" }}
+		{{ if not_enough_characters }}
+			<hr>
+			<p>Please type a couple more characters.</p>
+		{{ elseif no_results }}
+			<hr>
+			<p>Nothing found for <em>{{ _query }}</em>.</p>
+		{{ elseif no_query }}
+			{{# do nothing #}}
+		{{ else }}
+			{{ if first }}
+				<hr>
+				<p>Hark, good sir! For I have found the following regarding <b><i>{{ _query }}</i></b>:</p>
+		
+				<ul>
+			{{ endif }}
+		
+			<li>
+				<h4><a href="{{ url }}">{{ title }}</a> <small style="color: #999; font-size: 0.75em; font-style: italic;">{{ _score }}</span></small></h4>
+			</li>
+		
+			{{ if last }}</ul>{{ endif }}
+		{{ endif }}
+	{{ /bloodhound:search }}
+
+	{{ bloodhound:pagination dataset="sample" }}
+		{{ if !no_results && !no_query && total_pages > 1 }}
+		<hr>
+		This is page {{ current_page }} of {{ total_pages }}.
+	
+		<p>
+			{{ if next_page }}
+				<a href="{{ next_page }}">Next Page</a>
+			{{ endif }}
+	
+			{{ if previous_page }}
+				<a href="{{ previous_page }}">Previous Page</a>
+			{{ endif }}
+		</p>
+		{{ endif }}
+	{{ /bloodhound:pagination }}
+</div>
