@@ -48,7 +48,7 @@ class Tasks_bloodhound extends Tasks
 			$data = $this->getData($config);
 
 			try {
-				$comb = new Comb($data, $config);
+				$comb = Comb::create($data, $config);
 
 				// look up query
 				$results = $comb->lookUp($query);
