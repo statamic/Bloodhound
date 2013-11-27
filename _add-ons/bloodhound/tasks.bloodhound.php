@@ -8,7 +8,7 @@ class Tasks_bloodhound extends Tasks
 {
 	/**
 	 * Looks up a given $query with the given $config
-	 * 
+	 *
 	 * @param string  $query  String to look up in data
 	 * @param array  $config  Array of configuration options
 	 * @return array
@@ -17,10 +17,10 @@ class Tasks_bloodhound extends Tasks
 	{
 		// require the class
 		require_once('comb.php');
-		
+
 		// create a hash for this search
 		$hash = 'searches/' . $this->getSearchHash($config);
-		
+
 		// while we're here, clean up old unusable cached searches
 		if ($config['query_cache_length'] == "on cache update") {
 			$this->cache->purgeFromBefore(Cache::getLastCacheUpdate(), 'searches');
@@ -107,14 +107,14 @@ class Tasks_bloodhound extends Tasks
 				$this->logSearch($config['query'], 0);
 			}
 		}
-		
+
 		return $output;
 	}
 
 
 	/**
 	 * Loads the data file and merges all configs together
-	 * 
+	 *
 	 * @param string  $dataset  Dataset to attempt to load
 	 * @param array  $parameters  Parameters that were called on the plugin
 	 * @return array
@@ -127,7 +127,7 @@ class Tasks_bloodhound extends Tasks
 				unset($parameters[$key]);
 			}
 		}
-		
+
 		// set some defaults if nothing is set
 		$default_values = array(
 			'use_stemming' => false,
@@ -137,7 +137,7 @@ class Tasks_bloodhound extends Tasks
 
 			'log_successful_searches' => true,
 			'log_failed_searches' => true,
-			
+
 			'folders' => URL::getCurrent(),
 			'taxonomy' => false,
 			'show_hidden' => false,
@@ -152,7 +152,7 @@ class Tasks_bloodhound extends Tasks
 			'query_variable' => 'query',
 			'include_content' => true
 		);
-		
+
 		// a complete list of all possible config variables
 		$config = array(
 			'match_weights' => null,
@@ -169,12 +169,12 @@ class Tasks_bloodhound extends Tasks
 			'exclude_properties' => null,
 			'include_properties' => null,
 			'stop_words' => null,
-            
+
 			'log_successful_searches' => null,
 			'log_failed_searches' => null,
-			
+
 			'query_cache_length' => null,
-			
+
 			'folders' => null,
 			'taxonomy' => null,
 			'show_hidden' => null,
@@ -185,16 +185,16 @@ class Tasks_bloodhound extends Tasks
 			'show_past' => null,
 			'type' => null,
 			'conditions' => null,
-			
+
 			'limit' => null,
 			'offset' => null,
 			'paginate' => null,
 			'query_variable' => null,
 			'include_content' => null,
-			
+
 			'query' => null
 		);
-		
+
 		$loaded_config = array();
 		if ($dataset) {
 			$dataset_file = $file = Config::getConfigPath() . '/add-ons/' . $this->addon_name . '/datasets/' . $dataset . '.yaml';
@@ -204,30 +204,33 @@ class Tasks_bloodhound extends Tasks
 				$this->log->error("Could not use dataset `" . $dataset . "`, YAML file does not exist.");
 			}
 		}
-		
+
+		// load global config
+		$global_config = Helper::pick($this->getConfig(), array());
+
 		// merge config variables in order
-		$all_config = array_merge($config, $default_values, $loaded_config, $parameters);
-		
+		$all_config = array_merge($config, $default_values, $global_config, $loaded_config, $parameters);
+
 		// get query
 		if (!isset($parameters['query']) && is_null($all_config['query']) && $all_config['query_variable']) {
 			$new_query = filter_input(INPUT_GET, $all_config['query_variable']);
-			$all_config['query'] = $new_query;			
+			$all_config['query'] = $new_query;
 		}
-		
+
 		// always add content to exclude properties, don't worry, content_raw will take care of it
 		if (is_array($all_config['exclude_properties'])) {
 			$all_config['exclude_properties'] = array_unique(array_merge($all_config['exclude_properties'], array('content')));
 		} else {
 			$all_config['exclude_properties'] = array('content');
 		}
-		
+
 		return $all_config;
-    	}
+	}
 
 
 	/**
 	 * Gets the target data from the cache
-	 * 
+	 *
 	 * @param array  $config  Configuration array
 	 * @return array
 	 */
@@ -246,22 +249,23 @@ class Tasks_bloodhound extends Tasks
 
 		// filters
 		$content_set->filter($config);
-		
+
 		$content_set->supplement(array(
 			'merge_with_data' => false
 		));
-		
+
 		$content_set->prepare($config['include_content']);
-		
+
 		$data = $content_set->get();
-		
+		rd($data);
+
 		return $data;
 	}
 
 
 	/**
 	 * Create a unique search hash based on all of the configuration options
-	 * 
+	 *
 	 * @param array  $config  Configuration array
 	 * @return string
 	 */
@@ -273,7 +277,7 @@ class Tasks_bloodhound extends Tasks
 
 	/**
 	 * Supplements a list of results with first, last, count, and total_results
-	 * 
+	 *
 	 * @param array  $output  The data array to supplement
 	 * @return mixed
 	 */
@@ -281,7 +285,7 @@ class Tasks_bloodhound extends Tasks
 	{
 		$i = 1;
 		$length = count($output);
-		
+
 		foreach ($output as $key => $item) {
 			$stats = array(
 				'first'         => ($i === 1),
@@ -289,19 +293,19 @@ class Tasks_bloodhound extends Tasks
 				'count'         => $i,
 				'total_results' => $length
 			);
-			
+
 			$output[$key] = array_merge($item, $stats);
-			
+
 			$i++;
 		}
-		
+
 		return $output;
 	}
 
 
 	/**
 	 * Logs that a search was performed
-	 * 
+	 *
 	 * @param string  $query  The string that was queried
 	 * @param string|int  $results  The number of results
 	 * @return void
@@ -311,7 +315,7 @@ class Tasks_bloodhound extends Tasks
 		$searches = Helper::pick($this->session->get('searches'), array());
 		$plural   = ($results === 1) ? '' : 's';
 		$query    = htmlentities($query);
-		
+
 		// check to see if this session has performed this search before
 		// this prevents multiple page views from being tagged as multiple searches
 		if (!isset($searches[$query])) {
