@@ -174,7 +174,7 @@
 
 # limits the number of results returned, or when `paginate` is on, the number 
 # of results per page
-#limit_results: 10
+#limit: 10
 
 # the number of results to offset the results returned (don't use if you want 
 # to use `paginate`)
