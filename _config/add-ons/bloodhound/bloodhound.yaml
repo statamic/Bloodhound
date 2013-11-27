@@ -89,10 +89,6 @@
 # as a whole?
 #include_full_query: true
 
-# if more results come back than the limit allows, should a `too many results` 
-# error happen?
-#enable_too_many_results: false
-
 # should results be sorted by score?
 #sort_by_score: true
 

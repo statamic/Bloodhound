@@ -82,7 +82,7 @@ class Plugin_bloodhound extends Plugin
 		
 		// get the query variables
 		$query_var = $config['query_variable'];
-		$query     = $config['query'];
+		$query     = urlencode($config['query']);
 
 		// count the content available
 		$count = count($output);
