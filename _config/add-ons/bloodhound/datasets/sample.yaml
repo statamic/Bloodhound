@@ -1,3 +1,7 @@
+# This is a sample dataset to show you how they work, note that we're only
+# overriding the things that we want to for this dataset. All other values for
+# settings will be pulled from the global config and the default values that
+# come with Bloodhound out-of-the-box.
 min_characters: 2
 folders: blog|about-me|survival-guide*
 limit: 4

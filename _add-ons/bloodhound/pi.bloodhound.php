@@ -27,26 +27,26 @@ class Plugin_bloodhound extends Plugin
 		$output = $this->tasks->lookUp($config['query'], $config);
 
 		// limit if we need to
-		if ($config['limit_results'] || $config['offset']) {
-			if ($config['limit_results'] && $config['paginate'] && !$config['offset']) {
+		if ($config['limit'] || $config['offset']) {
+			if ($config['limit'] && $config['paginate'] && !$config['offset']) {
 				// pagination requested, isolate the appropriate page
 				$count = count($output);
 				$page  = URL::getCurrentPaginationPage();
 
 				// return the last page of results if $page is out of range
 				if (Config::getFixOutOfRangePagination()) {
-					if ($config['limit_results'] * $page > $count) {
-						$page = ceil($count / $config['limit_results']);
+					if ($config['limit'] * $page > $count) {
+						$page = ceil($count / $config['limit']);
 					} elseif ($page < 1) {
 						$page = 1;
 					}
 				}
 
-				$offset = ($page - 1) * $config['limit_results'];
-				$output = array_slice($output, $offset, $config['limit_results']);
+				$offset = ($page - 1) * $config['limit'];
+				$output = array_slice($output, $offset, $config['limit']);
 			} else {
 				// just limit or offset
-				$output = array_slice($output, $config['offset'], $config['limit_results']);
+				$output = array_slice($output, $config['offset'], $config['limit']);
 			}
 		}
 		
@@ -78,7 +78,7 @@ class Plugin_bloodhound extends Plugin
 		$output = $this->tasks->lookUp($config['query'], $config);
 
 		// get limit
-		$limit  = ($config['limit_results']) ? $config['limit_results'] : 10;
+		$limit  = ($config['limit']) ? $config['limit'] : 10;
 		
 		// get the query variables
 		$query_var = $config['query_variable'];
@@ -137,8 +137,8 @@ class Plugin_bloodhound extends Plugin
 			'enable_too_many_results' => $this->fetchParam('enable_too_many_results', null, null, true, false),
 			'sort_by_score' => $this->fetchParam('sort_by_score', null, null, true, false),
 
-            'log_successful_searches' => $this->fetchParam('log_successful_searches', null, null, true, false),
-            'log_failed_searches' => $this->fetchParam('log_failed_searches', null, null, true, false),
+			'log_successful_searches' => $this->fetchParam('log_successful_searches', null, null, true, false),
+			'log_failed_searches' => $this->fetchParam('log_failed_searches', null, null, true, false),
 
 			'query_cache_length' => $this->fetchParam('query_cache_length', null, 'is_numeric', false, false),
 
@@ -153,7 +153,7 @@ class Plugin_bloodhound extends Plugin
 			'type' => $this->fetchParam('content_type', null, null, false, true),
 			'conditions' => $this->fetchParam('conditions', null, false, false, false),
 
-			'limit_results' => $this->fetchParam('limit', null, 'is_numeric'),
+			'limit' => $this->fetchParam('limit', null, 'is_numeric'),
 			'offset' => $this->fetchParam('offset', null, null, true, false),
 			'paginate' => $this->fetchParam('paginate', null, null, true, false),
 			'query_variable' => $this->fetchParam('query_variable', null, null, false, false),

@@ -1,11 +1,11 @@
 ###############################################################################
 #                                                                             #
-#                  .d8888b.                         888                       # 
-#                 d88P  Y88b                        888                       #
-#                 888         .d88b.  88888b.d88b.  888888b.                  #
-#                 888        d88""88b 888 "888 "88b 888  "88b                 #
-#                 Y88b  d88P Y88..88P 888  888  888 888  d88P                 #
-#                  "Y8888P"   "Y88P"  888  888  888 888888P"                  #
+#  8888b.   88                      88 88                                 88  #
+#  88  .8B  88                      88 88                                 88  #
+#  88888K.  88  .d8b.   .d8b.   .d8888 8888b.  .d8b.  88   88 8888b.  .d8888  #
+#  88  "Y8b 88 d8" "8b d8" "8b d8"  88 88 "8b d8" "8b 88   88 88 "8b d8"  88  #
+#  88   d8P 88 Y8. .8P Y8. .8P Y8b  88 88  88 Y8. .8P Y8. .8Y 88  88 Y8b  88  #
+#  88888P"  88  "Y8P"   "Y8P"   "Y8888 88  88  "Y8P"   "Y8Y"  88  88  "Y8888  #
 #                                                                             #
 #                           A Statamic Search Add-On                          #
 #                                                                             #
@@ -19,11 +19,11 @@
 #  lower numbers:                                                             #
 #                                                                             #
 #    --( lowest priority )--                                                  #
-#    1. default values (as set within the add-on itself)                      #
-#    2. settings set in the `comb.yaml` configuration file (this file)        #
+#    1. default values (as set within the add-on itself, not editable)        #
+#    2. settings set in the `bloodhound.yaml` configuration file (this file)  #
 #    3. settings set in the `dataset` YAML file corresponding to the          #
-#       `dataset` parameter set on a comb tag itself                          #
-#    4. parameters set on the comb tag itself (when possible)                 #
+#       `dataset` parameter set on a Bloodhound tag itself                    #
+#    4. parameters set on the Bloodhound tag itself (when possible)           #
 #    --( highest priority )--                                                 #
 #                                                                             #
 #  You'll notice that #4 on the list above says "(when possible)," this is    #
@@ -41,6 +41,9 @@
 #  All of the available settings have been listed below. If a setting has a   #
 #  default value set within the add-on itself, that value is listed. Simply   #
 #  comment out the setting you which to set and set it.                       #
+#                                                                             #
+#  And of course, for complete details, read the full documentation at        #
+#  http://statamic.com/add-ons/bloodhound                                     #
 #                                                                             #
 ###############################################################################
 
@@ -76,10 +79,10 @@
 # what type of query should be used? (boolean|words|whole)
 #query_mode: boolean
 
-# should comb automatically singularize pluralized queried words (English only)
+# should Bloodhound automatically singularize queried words (English-only)
 #use_stemming: false
 
-# should comb automatically substitute 'and' for '&' (and vice versa)
+# should Bloodhound automatically substitute 'and' for '&' (and vice versa)
 #use_alternates: false
 
 # for `boolean` or `words` query modes, should we also search the entire phrase 

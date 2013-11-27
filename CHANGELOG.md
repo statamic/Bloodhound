@@ -2,4 +2,4 @@
 
 ## v1.0
 
-- Comb is released.
+- Bloodhound is released.

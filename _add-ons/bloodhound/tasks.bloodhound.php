@@ -132,11 +132,11 @@ class Tasks_bloodhound extends Tasks
 		$default_values = array(
 			'use_stemming' => false,
 			'use_alternates' => false,
-            'stop_words' => array('the', 'a', 'an'),
+			'stop_words' => array('the', 'a', 'an'),
 			'query_cache_length' => 30,
 
-            'log_successful_searches' => true,
-            'log_failed_searches' => true,
+			'log_successful_searches' => true,
+			'log_failed_searches' => true,
 			
 			'folders' => URL::getCurrent(),
 			'taxonomy' => false,
@@ -146,7 +146,7 @@ class Tasks_bloodhound extends Tasks
 			'show_past' => true,
 			'type' => 'all',
 
-            'limit_results' => 10,
+			'limit' => 10,
 			'offset' => 0,
 			'paginate' => true,
 			'query_variable' => 'query',
@@ -167,11 +167,11 @@ class Tasks_bloodhound extends Tasks
 			'enable_too_many_results' => null,
 			'sort_by_score' => null,
 			'exclude_properties' => null,
-            'include_properties' => null,
-            'stop_words' => null,
+			'include_properties' => null,
+			'stop_words' => null,
             
-            'log_successful_searches' => null,
-            'log_failed_searches' => null,
+			'log_successful_searches' => null,
+			'log_failed_searches' => null,
 			
 			'query_cache_length' => null,
 			
@@ -186,7 +186,7 @@ class Tasks_bloodhound extends Tasks
 			'type' => null,
 			'conditions' => null,
 			
-			'limit_results' => null,
+			'limit' => null,
 			'offset' => null,
 			'paginate' => null,
 			'query_variable' => null,
@@ -203,12 +203,6 @@ class Tasks_bloodhound extends Tasks
 			} else {
 				$this->log->error("Could not use dataset `" . $dataset . "`, YAML file does not exist.");
 			}
-		}
-
-		// unset limit, we'll do this manually
-		if (isset($loaded_config['limit'])) {
-			$loaded_config['limit_results'] = $loaded_config['limit'];
-			unset($loaded_config['limit']);
 		}
 		
 		// merge config variables in order
@@ -324,34 +318,34 @@ class Tasks_bloodhound extends Tasks
 			// mark as stored
 			$searches[$query] = true;
 			$this->session->set('searches', $searches);
-			
+
 			// make a note in the log
 			if ($results) {
 				// log `info` message
-                if ($this->fetchConfig('log_successful_searches', true, null, true, false)) {
-    				$this->log->info('Someone searched for *' . $query . '* and found ' . $results . ' result' . $plural . '.');
-                }
+				if ($this->fetchConfig('log_successful_searches', true, null, true, false)) {
+					$this->log->info('Someone searched for *' . $query . '* and found ' . $results . ' result' . $plural . '.');
+				}
 
 				// set file to update
 				$file = 'successful_searches.yaml';
 			} else {
 				// log `warn` message
-                if ($this->fetchConfig('log_successful_searches', true, null, true, false)) {
-				    $this->log->warn('Someone searched for *' . $query . '* and no results were found.');
-                }
+				if ($this->fetchConfig('log_successful_searches', true, null, true, false)) {
+					$this->log->warn('Someone searched for *' . $query . '* and no results were found.');
+				}
 
 				// set file to update
 				$file = 'failed_searches.yaml';
 			}
 
 			$search_list = $this->cache->getYAML($file, array());
-			
+
 			if (isset($search_list[$query])) {
 				$search_list[$query] = $search_list[$query] + 1;
 			} else {
 				$search_list[$query] = 1;
 			}
-			
+
 			$this->cache->putYAML($file, $search_list);
 		}
 	}

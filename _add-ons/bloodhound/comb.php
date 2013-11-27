@@ -968,30 +968,30 @@ class Comb {
 	}
 
 
-    /**
-     * Filters out stop words
-     * 
-     * @param array  $words  A list of words to filter
-     * @return array
-     */
-    private function filterStopWords($words)
-    {
-        // short circuit if no stop words are set
-        if (!is_array($this->stop_words) || !count($this->stop_words)) {
-            return $words;
-        }
-        
-        foreach ($words as $key => $word) {
-            if (in_array($word, $this->stop_words)) {
-                unset($words[$key]);
-            }
-        }
-        
-        return $words;
-    }
+	/**
+	 * Filters out stop words
+	 *
+	 * @param array $words A list of words to filter
+	 * @return array
+	 */
+	private function filterStopWords($words)
+	{
+		// short circuit if no stop words are set
+		if (!is_array($this->stop_words) || !count($this->stop_words)) {
+			return $words;
+		}
+
+		foreach ($words as $key => $word) {
+			if (in_array($word, $this->stop_words)) {
+				unset($words[$key]);
+			}
+		}
+
+		return $words;
+	}
 
 
-    /**
+	/**
 	 * Mark the start of a query
 	 *
 	 * @return void
@@ -1010,6 +1010,7 @@ class Comb {
 	private function markEndQueryTime()
 	{
 		$this->query_end_time = microtime(true);
+
 		return $this->getQueryTime();
 	}
 
@@ -1023,7 +1024,28 @@ class Comb {
 	{
 		return $this->query_end_time - $this->query_start_time;
 	}
+	
 
+
+	// creators for Bloodhound
+	// ----------------------------------------------------------------------
+	
+	/**
+	 * Create a new Comb object but remove limit from config
+	 *
+	 * @param array  $data  Data to search through
+	 * @param array  $config  Config array to use (and remove `limit` from)
+	 * @return Comb 
+	 */
+	public static function create($data, $config)
+	{
+		// limiting is handled on the other end
+		if (isset($config['limit'])) {
+			unset($config['limit']);
+		}
+		
+		return new Comb($data, $config);
+	}
 }
 
 
