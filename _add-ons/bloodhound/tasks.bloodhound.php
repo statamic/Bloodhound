@@ -257,7 +257,6 @@ class Tasks_bloodhound extends Tasks
 		$content_set->prepare($config['include_content']);
 
 		$data = $content_set->get();
-		rd($data);
 
 		return $data;
 	}
