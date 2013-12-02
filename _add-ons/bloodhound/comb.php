@@ -891,7 +891,7 @@ class Comb {
 		} else {
 			$words = strtolower($query);
 
-			$parts['chunks'] = $words;
+			$parts['chunks'] = array($words);
 		}
 
 		return array(
