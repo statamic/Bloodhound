@@ -25,6 +25,7 @@ class Plugin_bloodhound extends Plugin
 
 		// do search
 		$output = $this->tasks->lookUp($config['query'], $config);
+        $total_found = count($output);
 
 		// limit if we need to
 		if ($config['limit'] || $config['offset']) {
@@ -51,7 +52,7 @@ class Plugin_bloodhound extends Plugin
 		}
 		
 		// supplement with first, last, etc.
-		$output = $this->tasks->supplement($output);
+		$output = $this->tasks->supplement($output, array('total_found' => $total_found));
 		
 		return Parse::tagLoop($this->content, $output);
 	}

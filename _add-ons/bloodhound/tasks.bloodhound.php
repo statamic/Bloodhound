@@ -315,12 +315,15 @@ class Tasks_bloodhound extends Tasks
 	 * Supplements a list of results with first, last, count, and total_results
 	 *
 	 * @param array  $output  The data array to supplement
+     * @param array  $other_data  Other data to add to each record
 	 * @return mixed
 	 */
-	public function supplement($output)
+	public function supplement($output, $other_data=array())
 	{
 		$i = 1;
 		$length = count($output);
+        
+        $other_data = Helper::ensureArray($other_data);
 
 		foreach ($output as $key => $item) {
 			$stats = array(
@@ -330,7 +333,7 @@ class Tasks_bloodhound extends Tasks
 				'total_results' => $length
 			);
 
-			$output[$key] = array_merge($item, $stats);
+			$output[$key] = $other_data + $stats + $item;
 
 			$i++;
 		}
