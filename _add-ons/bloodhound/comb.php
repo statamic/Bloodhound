@@ -866,16 +866,14 @@ class Comb {
 
 		// look for each word
 		if ($this->query_mode === self::QUERY_WORDS) {
-			$words = preg_split("/\s+/i", $query);
+            $parts['chunks'] = preg_split("/\s+/i", $query);
 
 			if ($this->use_alternates) {
-				$parts['chunks'] = array_merge($words, $this->getAlternateWords($parts['chunks']));
+				$parts['chunks'] = array_merge($parts['chunks'], $this->getAlternateWords($parts['chunks']));
 			}
 			
 			if ($this->use_stemming) {
 				$parts['chunks'] = array_merge($parts['chunks'], $this->getStemmedWords($parts['chunks']));
-			} else {
-				$paths["chunks"] = $words;
 			}
 
 			// add the full query if needed
@@ -918,9 +916,7 @@ class Comb {
 
 		// search for the entire query as one thing
 		} else {
-			$words = strtolower($query);
-
-			$parts['chunks'] = array($words);
+			$parts['chunks'] = array(strtolower($query));
 		}
 
 		return array(
