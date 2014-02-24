@@ -102,6 +102,9 @@ conditions:
 # should each content file's {{ content }} field be included in the search?
 include_content: true
 
+# should the 404 page be included in the search?
+include_404: false
+
 
 # -----------------------------------------------------------------------------
 # Logging Settings

@@ -150,7 +150,8 @@ class Tasks_bloodhound extends Tasks
 			'offset' => 0,
 			'paginate' => true,
 			'query_variable' => 'query',
-			'include_content' => true
+			'include_content' => true,
+            'include_404' => false
 		);
 
 		// a complete list of all possible config variables
@@ -191,6 +192,7 @@ class Tasks_bloodhound extends Tasks
 			'paginate' => null,
 			'query_variable' => null,
 			'include_content' => null,
+            'include_404' => null,
 
 			'query' => null
 		);
@@ -249,6 +251,13 @@ class Tasks_bloodhound extends Tasks
 
 		// filters
 		$content_set->filter($config);
+        
+        // custom filter, remove the 404 page if needed
+        if (!$config['include_404']) {
+            $content_set->customFilter(function($item) {
+                return ($item['url'] !== '/404');
+            });
+        }
 
 		$content_set->supplement(array(
 			'merge_with_data' => false

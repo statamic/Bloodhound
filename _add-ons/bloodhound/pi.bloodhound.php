@@ -158,6 +158,7 @@ class Plugin_bloodhound extends Plugin
 			'paginate' => $this->fetchParam('paginate', null, null, true, false),
 			'query_variable' => $this->fetchParam('query_variable', null, null, false, false),
 			'include_content' => $this->fetchParam('include_content', null, null, true, false),
+            'include_404' => $this->fetchParam('include_404', null, null, true, false),
 
 			'query' => $this->fetchParam('query', null, null, false, false)
 		);
