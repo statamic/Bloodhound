@@ -151,6 +151,7 @@ class Tasks_bloodhound extends Tasks
 			'paginate' => true,
 			'query_variable' => 'query',
 			'include_content' => true,
+            
             'include_404' => false
 		);
 
@@ -192,7 +193,9 @@ class Tasks_bloodhound extends Tasks
 			'paginate' => null,
 			'query_variable' => null,
 			'include_content' => null,
+            
             'include_404' => null,
+            'exclude' => null,
 
 			'query' => null
 		);
@@ -256,6 +259,31 @@ class Tasks_bloodhound extends Tasks
         if (!$config['include_404']) {
             $content_set->customFilter(function($item) {
                 return ($item['url'] !== '/404');
+            });
+        }
+        
+        // custom filter, remove any excluded folders
+        if ($config['exclude']) {
+            $excluded = Parse::pipeList($config['exclude']);
+            $content_set->customFilter(function($item) use ($excluded) {
+                foreach ($excluded as $exclude) {
+                    if ($exclude === "*" || $exclude === "/*") {
+                        // exclude all
+                        return false;
+                    } elseif (substr($exclude, -1) === "*") {
+                        // wildcard check
+                        if (strpos($item['_folder'], substr($exclude, 0, -1)) === 0) {
+                            return false;
+                        }
+                    } else {
+                        // plain check
+                        if ($exclude == $item['_folder']) {
+                            return false;
+                        }
+                    }
+                }
+                
+                return true;
             });
         }
 

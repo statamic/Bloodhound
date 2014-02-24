@@ -112,7 +112,7 @@
 # Data Settings
 # -----------------------------------------------------------------------------
 
-# folders to search through (search multiple folders at one by 
+# folders to search through (search multiple folders at one time by 
 # pipe-delimiting them)
 #folders: 
 
@@ -149,6 +149,10 @@
 
 # should the 404 page be included in the search?
 #include_404: false
+
+# folders to exclude in this search (exclude multiple folders at one time by
+# pipe-delimiting them)
+#exclude: 
 
 
 # -----------------------------------------------------------------------------
