@@ -317,7 +317,7 @@ class Comb {
 		}
 
 		// include full query
-		if (isset($settings['include_full_query']) && !is_null($settings['include_full_query']) && in_array($settings['include_full_query'], array(false, 'false', 'no', 0, '0'))) {
+		if (isset($settings['include_full_query']) && $this->is($settings['include_full_query'], false)) {
 			$this->include_full_query = false;
 		}
 
@@ -332,27 +332,22 @@ class Comb {
 		}
 
 		// sort by score
-		if (isset($settings['sort_by_score']) && !is_null($settings['sort_by_score']) && in_array($settings['sort_by_score'], array(false, 'false', 'no', 0, '0'))) {
+		if (isset($settings['sort_by_score']) && $this->is($settings['sort_by_score'], false)) {
 			$this->sort_by_score = false;
 		}
 
 		// use stemming
-		if (isset($settings['use_stemming']) && !is_null($settings['use_stemming']) && in_array($settings['use_stemming'], array(true, 'true', 'yes', 1, '1'))) {
+		if (isset($settings['use_stemming']) && $this->is($settings['use_stemming'], true)) {
 			$this->use_stemming = true;
 		}
 
 		// use alternates
-		if (isset($settings['use_alternates']) && !is_null($settings['use_alternates']) && in_array($settings['use_alternates'], array(true, 'true', 'yes', 1, '1'))) {
+		if (isset($settings['use_alternates']) && $this->is($settings['use_alternates'], true)) {
 			$this->use_alternates = true;
 		}
 
-		// sort by score
-		if (isset($settings['sort_by_score']) && !is_null($settings['sort_by_score']) && in_array($settings['sort_by_score'], array(false, 'false', 'no', 0, '0'))) {
-			$this->sort_by_score = false;
-		}
-
 		// group by category
-		if (isset($settings['group_by_category']) && !is_null($settings['group_by_category']) && in_array($settings['group_by_category'], array(true, 'true', 'yes', 1, '1'))) {
+		if (isset($settings['group_by_category']) && $this->is($settings['group_by_category'], true)) {
 			$this->group_by_category = true;
 		}
 
@@ -383,7 +378,41 @@ class Comb {
 	}
 
 
-	/**
+    /**
+     * Checks if a given $setting matches up with a $truthy_value
+     * 
+     * @param mixed  $setting  Setting to check
+     * @param bool  $truthy_value  Which set of truthy values should be checked
+     * @return bool
+     */
+    private function is($setting, $truthy_value)
+    {
+        // null values always return false
+        if (is_null($setting)) {
+            return false;
+        }
+        
+        if ($truthy_value) {
+            return (
+                $setting === true ||
+                strtolower($setting) === 'true' ||
+                strtolower($setting) === 'yes' ||
+                $setting === '1' ||
+                $setting === 1
+            );
+        } else {
+            return (
+                $setting === false ||
+                strtolower($setting) === 'false' ||
+                strtolower($setting) === 'no' ||
+                $setting === '0' ||
+                $setting === 0
+            );
+        }
+    }
+
+
+    /**
 	 * Prepares data for querying
 	 *
 	 * @return void
