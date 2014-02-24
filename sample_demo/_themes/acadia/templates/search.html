@@ -1,0 +1,59 @@
+<div class="row">
+	<div class="eight columns">
+		<div class="article">
+			{{ theme:partial src="breadcrumbs" }}
+			<h1>{{ title|smartypants|widont }}</h1>
+
+			<form action="/search" method="get">
+				<p>
+					Computer! Bring me information regarding <input type="text" name="query" value="{{ get:query|sanitize }}"> at once!
+				</p>
+				
+				{{ bloodhound:search dataset="sample" }}
+					{{ if not_enough_characters }}
+						<hr>
+						<p>
+							Please type more characters.
+						</p>
+					{{ elseif no_results }}
+						<hr>
+						<p>
+							Nothing found for <em>{{ _query }}</em>.
+						</p>
+					{{ elseif no_query }}
+						{{# do nothing #}}
+					{{ else }}
+						{{ if first }}
+							<hr>
+							<p>
+								Hark, for I have found the following for <strong>{{ _query }}</strong>:
+							</p>
+				
+							<ul>
+						{{ endif }}
+								
+						<li>
+							<h3>
+								<a href="{{ url }}">{{ title }}</a>
+								<small>{{ _score }}</small>
+							</h3>
+						</li>
+					{{ endif }}
+				{{ /bloodhound:search }}
+								
+				{{ bloodhound:pagination dataset="sample" }}
+					{{ if next_page }}
+						<a href="{{ next_page }}">Next</a>	
+					{{ endif }}
+					{{ if previous_page }}
+						<a href="{{ previous_page }}">Previous</a>	
+					{{ endif }}
+				{{ /bloodhound:pagination }}
+			</form>
+		</div>
+	</div>
+	<div class="four columns sidebar" role="complementary">
+		{{ theme:partial src="sub-navigation" }}
+		{{ theme:partial src="common-sidebar" }}
+	</div>
+</div>
