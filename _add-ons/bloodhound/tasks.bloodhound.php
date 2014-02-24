@@ -189,6 +189,7 @@ class Tasks_bloodhound extends Tasks
 			'conditions' => null,
 
 			'limit' => null,
+            'page_limit' => null,
 			'offset' => null,
 			'paginate' => null,
 			'query_variable' => null,

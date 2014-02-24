@@ -145,6 +145,9 @@ offset: 0
 # should the results be paginated?
 paginate: true
 
+# limits the total number of pages to be paginated through when `paginate` is on
+page_limit: 
+
 
 # -----------------------------------------------------------------------------
 # Result-Caching Settings

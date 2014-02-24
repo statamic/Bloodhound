@@ -36,7 +36,9 @@ class Plugin_bloodhound extends Plugin
 
 				// return the last page of results if $page is out of range
 				if (Config::getFixOutOfRangePagination()) {
-					if ($config['limit'] * $page > $count) {
+                    if ($config['page_limit'] && $page > $config['page_limit']) {
+                        $page = $config['page_limit'];
+                    } elseif ($config['limit'] * $page > $count) {
 						$page = ceil($count / $config['limit']);
 					} elseif ($page < 1) {
 						$page = 1;
@@ -87,6 +89,11 @@ class Plugin_bloodhound extends Plugin
 
 		// count the content available
 		$count = count($output);
+        
+        // take page_limit into account
+        if ($config['page_limit'] && $count > $config['page_limit'] * $limit) {
+            $count = $config['page_limit'] * $limit;
+        }
 		
 		// check for errors
 		if (isset($output[0]['no_results']) || isset($output[0]['no_query'])) {
@@ -155,6 +162,7 @@ class Plugin_bloodhound extends Plugin
 			'conditions' => $this->fetchParam('conditions', null, false, false, false),
 
 			'limit' => $this->fetchParam('limit', null, 'is_numeric'),
+            'page_limit' => $this->fetchParam('page_limit', null, 'is_numeric'),
 			'offset' => $this->fetchParam('offset', null, null, true, false),
 			'paginate' => $this->fetchParam('paginate', null, null, true, false),
 			'query_variable' => $this->fetchParam('query_variable', null, null, false, false),
