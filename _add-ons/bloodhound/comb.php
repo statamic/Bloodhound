@@ -374,7 +374,7 @@ class Comb {
 	 */
 	private function preformat($raw_query)
 	{
-		return trim(preg_replace("/[^\w\d\-\+\s&’'‘]/i", "", $raw_query));
+		return trim(preg_replace("/[^\w\d\-\.:+\s&’'‘]/i", "", $raw_query));
 	}
 
 
